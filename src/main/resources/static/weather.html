@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .input-group input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    .btn-container {
+      text-align: center;
+    }
+
+    .btn-container button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 3px;
+      border: none;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #weatherInfo {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 3px;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#getWeatherBtn").click(function() {
+        var city = $("#cityInput").val();
+        $.ajax({
+          url: '/api/weather/getWeather?city=' + encodeURIComponent(city),
+          type: 'GET',
+          success: function(weatherData) {
+            var info = "";
+            for (var i = 0; i < weatherData.length; i++) {
+              info += weatherData[i] + "<br>";
+            }
+            $("#weatherInfo").html(info);
+          },
+          error: function() {
+            $("#weatherInfo").html("无法获取天气数据。");
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+<h1>查询天气</h1>
+<div class="container">
+  <div class="input-group">
+    <label for="cityInput">输入城市名称</label>
+    <input type="text" id="cityInput" placeholder="例如：北京">
+  </div>
+  <div class="btn-container">
+    <button id="getWeatherBtn">查询天气</button>
+  </div>
+  <div id="weatherInfo"></div>
+</div>
+</body>
+</html>
